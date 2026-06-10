@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f7fa;
+      color: #1a2a3a;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: #0a3d6b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 56px;
+    }
+    .nav-logo {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .nav-logo span { color: #4fc3f7; }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      color: #cde; text-decoration: none;
+      padding: 6px 18px; border-radius: 4px;
+      font-size: 0.95rem; transition: background .15s;
+    }
+    .nav-links a.active { background: #1565c0; color: #fff; }
+    .nav-links a:hover:not(.active) { background: rgba(255,255,255,.12); }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 72px 80px 64px;
+      gap: 48px;
+    }
+    .hero-left { flex: 1; max-width: 460px; }
+    .hero-left h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1.1;
+      color: #0a2540;
+      margin-bottom: 24px;
+    }
+    .hero-left p {
+      font-size: 1.05rem;
+      color: #4a6070;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    /* ── BOTÕES PRINCIPAIS ── */
+    .btn-primary {
+      background: #0a3d6b;
+      color: #fff;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .18s, transform .12s;
+    }
+    .btn-primary:hover { background: #1565c0; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: #0a3d6b;
+      padding: 14px 28px;
+      border: 2px solid #0a3d6b;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .18s, color .18s, transform .12s;
+    }
+    .btn-outline:hover {
+      background: #0a3d6b; color: #fff; transform: translateY(-1px);
+    }
+
+    /* ── CARD CONEXÃO ── */
+    .hero-right { flex: 1; max-width: 520px; }
+    .card-conexao {
+      background: #e8f4fc;
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+    .card-conexao .label {
+      display: inline-block;
+      background: #1565c0;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      letter-spacing: .5px;
+    }
+    .card-item {
+      background: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .card-item:last-child { margin-bottom: 0; }
+    .card-icon {
+      width: 48px; height: 48px;
+      background: #dbeeff;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .card-item h3 { font-size: 1rem; font-weight: 700; color: #0a2540; margin-bottom: 4px; }
+    .card-item p  { font-size: 0.85rem; color: #5a7080; line-height: 1.5; }
+
+    /* ── SUB-FOOTER ── */
+    .sub { padding: 28px 80px 8px; }
+    .sub small { color: #1565c0; font-weight: 600; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; }
+    .sub h2 { font-size: 1.8rem; font-weight: 800; color: #0a2540; margin-top: 8px; }
+
+    /* ────────── MODAL ────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(10,30,50,.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 44px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 24px 64px rgba(10,30,50,.22);
+      animation: slideIn .22s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal h2 {
+      font-size: 1.5rem; font-weight: 800;
+      color: #0a2540; margin-bottom: 6px;
+    }
+    .modal .subtitle {
+      font-size: 0.9rem; color: #5a7080; margin-bottom: 28px;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block; font-size: 0.85rem;
+      font-weight: 600; color: #2a4060;
+      margin-bottom: 6px;
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #c8d8e8;
+      border-radius: 7px;
+      font-size: 0.95rem;
+      color: #0a2540;
+      outline: none;
+      transition: border-color .15s;
+      background: #fff;
+    }
+    .field input:focus,
+    .field select:focus { border-color: #1565c0; }
+
+    .modal-actions {
+      display: flex; gap: 12px; margin-top: 28px;
+    }
+    .modal-actions .btn-primary { flex: 1; padding: 13px; font-size: 1rem; }
+    .btn-cancel {
+      background: transparent;
+      border: 1.5px solid #c8d8e8;
+      color: #5a7080;
+      padding: 13px 20px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-cancel:hover { background: #f0f4f8; }
+
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 16px 0 4px;
+    }
+    .success-msg .check { font-size: 2.8rem; margin-bottom: 10px; }
+    .success-msg h3 { font-size: 1.2rem; font-weight: 800; color: #0a2540; margin-bottom: 6px; }
+    .success-msg p  { font-size: 0.9rem; color: #5a7080; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">NE<span>X</span>O</div>
+    <div class="nav-links">
+      <a href="#" class="active">Início</a>
+      <a href="#">Sobre nós</a>
+      <a href="#">Produtos</a>
+      <a href="#">Blog</a>
+      <a href="#">Contato</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Conecte-se a quem realmente entrega resultados</h1>
+      <p>A Nexo é a ponte inteligente entre prestadores verificados e empresas, associações ou pessoas físicas que precisam de serviços com confiança e agilidade.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="abrirModal('plataforma')">Acessar plataforma</button>
+        <button class="btn-outline"  onclick="abrirModal('empresa')">Sobre a empresa</button>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="card-conexao">
+        <span class="label">Conexão entre:</span>
+
+        <div class="card-item">
+          <div class="card-icon">🔧</div>
+          <div>
+            <h3>Prestador</h3>
+            <p>Profissionais com identidade e experiência validadas, prontos para entregar serviços com mais qualidade, segurança e confiabilidade.</p>
+          </div>
+        </div>
+
+        <div class="card-item">
+          <div class="card-icon">🏢</div>
+          <div>
+            <h3>Contratante</h3>
+            <p>Contratantes autenticados na plataforma, garantindo oportunidades reais e relações mais transparentes desde o primeiro contato.</p>
+          </div>
+        </div>
+
+        <div class="card-item">
+          <div class="card-icon">👥</div>
+          <div>
+            <h3>Cliente</h3>
+            <p>Do início ao fim, você conta com pagamentos protegidos, suporte dedicado e a tranquilidade de contratar com mais confiança e menos risco.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sub">
+    <small>Por que usar a Nexo</small>
+    <h2>Tudo que você precisa em um só lugar</h2>
+  </div>
+
+  <!-- MODAL CADASTRO -->
+  <div class="modal-overlay" id="modalOverlay" onclick="fecharModalFora(event)">
+    <div class="modal" id="modalBox">
+
+      <div id="formSection">
+        <h2>Criar conta</h2>
+        <p class="subtitle" id="modalSubtitle">Acesse a plataforma e comece agora.</p>
+
+        <div class="field">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" placeholder="Seu nome" />
+        </div>
+
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com" />
+        </div>
+
+        <div class="field">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="Mínimo 8 caracteres" />
+        </div>
+
+        <div class="field">
+          <label for="role">Perfil de acesso</label>
+          <select id="role">
+            <option value="">Selecione seu perfil…</option>
+            <option value="prestador">Prestador</option>
+            <option value="contratante">Contratante</option>
+            <option value="cliente">Cliente</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+          <button class="btn-primary" onclick="cadastrar()">Cadastrar</button>
+        </div>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        <div class="check">✅</div>
+        <h3>Cadastro realizado!</h3>
+        <p>Bem-vindo à Nexo. Você já pode acessar a plataforma.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const overlay   = document.getElementById('modalOverlay');
+    const formSec   = document.getElementById('formSection');
+    const successEl = document.getElementById('successMsg');
+    const subtitle  = document.getElementById('modalSubtitle');
+
+    function abrirModal(origem) {
+      formSec.style.display   = 'block';
+      successEl.style.display = 'none';
+      subtitle.textContent = origem === 'plataforma'
+        ? 'Acesse a plataforma e comece agora.'
+        : 'Conheça a empresa e faça parte da Nexo.';
+      // limpa campos
+      ['nome','email','senha','role'].forEach(id => {
+        const el = document.getElementById(id);
+        el.tagName === 'SELECT' ? el.value = '' : el.value = '';
+      });
+      overlay.classList.add('active');
+    }
+
+    function fecharModal() {
+      overlay.classList.remove('active');
+    }
+
+    function fecharModalFora(e) {
+      if (e.target === overlay) fecharModal();
+    }
+
+    function cadastrar() {
+      const nome  = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+      const role  = document.getElementById('role').value;
+
+      if (!nome || !email || !senha || !role) {
+        alert('Por favor, preencha todos os campos.'); return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Informe um e-mail válido.'); return;
+      }
+      if (senha.length < 8) {
+        alert('A senha deve ter pelo menos 8 caracteres.'); return;
+      }
+
+      // Simula cadastro
+      formSec.style.display   = 'none';
+      successEl.style.display = 'block';
+
+      setTimeout(fecharModal, 2800);
+    }
+
+    // ESC fecha o modal
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') fecharModal();
+    });
+  </script>
+</body>
+</html>
